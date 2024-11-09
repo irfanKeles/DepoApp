@@ -26,6 +26,7 @@ export class DashboardComponent {
   depoBColums: Colum[] = [];
   category:Category[]= [];
   tableAWarehouseData: Warehouse[] = [];
+  tableBWarehouseData: Warehouse[] = [];
   inventoryTypeA: InventoryTypeEnum = InventoryTypeEnum.A;
   inventoryTypeB: InventoryTypeEnum = InventoryTypeEnum.B;
 
@@ -52,11 +53,13 @@ export class DashboardComponent {
   ngOnInit() {
     this.getCategory();
     this.getAWarehouse();
+    this.getBWarehouse();
   }
 
   getCategory() {
     this.categoryService.getList().subscribe(x => {
       this.category = x;
+      this.sharedService.setCategory(x);
     },
       err => {
         console.log(err);
@@ -65,14 +68,33 @@ export class DashboardComponent {
   getAWarehouse() {
     this.inventoryService.getAWarehouse().subscribe(x => {
       this.tableAWarehouseData = x;
-      this.tableAWarehouseData = this.tableAWarehouseData.map(x => {
+      this.sharedService.setInventoryA(this.tableAWarehouseData);
+      this.sharedService.getCategory().subscribe(categories => {
+        this.tableAWarehouseData = this.tableAWarehouseData.map(item => {
+          const category = categories.find(y => y.id === item.categoryId);
+          return {
+            ...item,
+            categoryId: category ? category.name : "null"
+          };
+        });
+        console.log(this.tableAWarehouseData);
+      });
+    },
+    err => {
+      console.log(err);
+    });
+  }
+  getBWarehouse(){
+    this.inventoryService.getBWarehouse().subscribe(x => {
+      this.tableBWarehouseData = x;
+      this.sharedService.setInventoryB(this.tableBWarehouseData )
+      this.tableBWarehouseData = this.tableBWarehouseData.map(x => {
         const category = this.category.find(y => y.id === x.categoryId);
         return {
             ...x,
             categoryId: category ? category.name : "null" 
         };
     });
-    this.sharedService.setInventoryA(this.tableAWarehouseData )
     },
       err => {
         console.log(err);

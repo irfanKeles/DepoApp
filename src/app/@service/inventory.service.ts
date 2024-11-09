@@ -4,7 +4,8 @@ import { Warehouse } from '../@model/inventory';
 import { Observable } from 'rxjs';
 
 const Endpoints = {
-  GetAWarehouse: 'inventoryA.json'
+  GetAWarehouse: 'inventoryA.json',
+  GetBWarehouse: 'inventoryB.json'
 }
 
 @Injectable({
@@ -17,6 +18,10 @@ export class InventoryService {
 
   getAWarehouse(): Observable<Warehouse[]> {
     const fullPath = Endpoints.GetAWarehouse;
+    return this._http.get<Warehouse[]>(fullPath);
+  }
+  getBWarehouse(): Observable<Warehouse[]> {
+    const fullPath = Endpoints.GetBWarehouse;
     return this._http.get<Warehouse[]>(fullPath);
   }
 }

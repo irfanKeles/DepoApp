@@ -4,6 +4,7 @@ import { Category } from '../../@model/category';
 import { CategoryService } from '../../@service/category.service';
 import { FormsModule } from '@angular/forms';
 import { isPlatformBrowser } from '@angular/common';
+import { SharedService } from '../../@service/shared.service';
 @Component({
   selector: 'app-category',
   standalone: true,
@@ -20,8 +21,8 @@ export class CategoryComponent {
   categoryList: Category[] = [];
 
   constructor(
-    private categoryService: CategoryService,
-    @Inject(PLATFORM_ID) private platformId: any
+    @Inject(PLATFORM_ID) private platformId: any,
+    private sharedService: SharedService,
   ) {
     if (isPlatformBrowser(this.platformId)) {
       this.body = document.body;
@@ -31,14 +32,12 @@ export class CategoryComponent {
     this.getCagetory();
   }
   getCagetory() {
-    this.categoryService.getList().subscribe(x => {
+    this.sharedService.getCategory().subscribe(x => {
       this.categoryList = x;
       this.selectedCategory = this.categoryList[0];
     },
       err => {
-        console.log(err);
+        console.log(err)
       })
   }
-
-
 }

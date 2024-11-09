@@ -29,7 +29,7 @@ export class SharedService {
     const data = localStorage.getItem(CustomLocalStorageKey.InventoryB);
     return of(data ? JSON.parse(data) : []);
   }
-  getCategoy(): Observable<Category[]> {
+  getCategory(): Observable<Category[]> {
     const data = localStorage.getItem(CustomLocalStorageKey.Category);
     return of(data ? JSON.parse(data) : []);
   }
