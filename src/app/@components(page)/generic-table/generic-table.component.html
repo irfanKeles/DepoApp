@@ -7,7 +7,8 @@
                 </th>
             }
             <th class="text-end">
-                <p-button label="Reyon Ekle" [outlined]="true"/>
+                <app-table-creat-modal [type]="inventoryType"></app-table-creat-modal>
+                <!-- <p-button label="Reyon Ekle" [outlined]="true"/> -->
             </th>
         </tr>
     </ng-template>
@@ -21,7 +22,7 @@
                     @case ('products'){
                         <td class="border-end">
                             @for(item of rowData.products; track item){
-                                <label class="badge text-bg-primary me-1"> {{item.value}} </label>
+                                <label class="badge text-bg-primary me-1"> {{item.name}} </label>
                             }
                         </td>
                     }
