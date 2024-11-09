@@ -1,0 +1,22 @@
+[
+    { 
+        "id": "f6065887-b5d2-4264-ad79-534bdf4c006f",
+        "name": "Gıda"
+    },
+    { 
+        "id": "ca436ff0-d446-4a1e-9775-8c8e4b03bb81",
+        "name": "Temizlik"
+    },
+    { 
+        "id": "028e9e0c-46d4-4898-b687-c5fc0d30a998",
+        "name": "Kırtasite"
+    },
+    { 
+        "id": "6d5efdd8-d426-4b55-83ae-47a59f0c8d9c",
+        "name": "Kozmetik"
+    },
+    { 
+        "id": "7baf8c79-4678-478f-8709-a3817bd1483f",
+        "name": "Elektronik"
+    }
+]

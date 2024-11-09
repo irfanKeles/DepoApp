@@ -1,7 +1,8 @@
 <div class="row">
     <div class="col-md-6">
+        <app-category></app-category>
         <app-blank [cardTitle]="'Depo A'">
-            container 1 
+            <app-generic-table [cols]="depoAColums" [tableData]="tableData"></app-generic-table>
         </app-blank>
     </div>
     <div class="col-md-6">
