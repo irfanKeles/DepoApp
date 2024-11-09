@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-blank',
@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './blank.component.scss'
 })
 export class BlankComponent {
-
+  @Input() cardTitle!:string;
 }
