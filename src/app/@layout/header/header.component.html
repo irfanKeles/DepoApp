@@ -1,47 +1,48 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid p-0">
-      <a class="navbar-brand" routerLink="/">Depo App</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <div class="row w-100">
-          <div class="col-md-10  col-sm-12">
-            <div class="container justify-content-center align-items-center d-flex p-0">
-              <div class=" currencyHeader">
-                <div>
-                  <label class="border border-2 border-secondary p-2 fw-bold">
-                    <i class="bi bi-currency-dollar fw-bold"></i> 
-                    33,7870
-                  </label>
-                </div>
-                <div>
-                  <label class="border border-2 border-secondary p-2 fw-bold">
-                    <i class="fa-solid fa-sterling-sign fw-bold"></i>
-                    33,7870
-                  </label>
-               
-                </div>
-                <div>
-                  <label class="border border-2 border-secondary p-2 fw-bold">
-                    <i class="bi bi-currency-euro fw-bold"></i>
-                    33,7870
-                  </label>
-                </div>
+  <div class="container-fluid p-0">
+    <a class="navbar-brand" routerLink="/">Depo App</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="row w-100">
+        <div class="col-md-10  col-sm-12">
+          <div class="container justify-content-center align-items-center d-flex p-0">
+            <div class=" currencyHeader">
+              <div>
+                <label class="border border-2 border-secondary p-2 fw-bold">
+                  <i class="bi bi-currency-dollar fw-bold"></i>
+                  33,7870
+                </label>
+              </div>
+              <div>
+                <label class="border border-2 border-secondary p-2 fw-bold">
+                  <i class="fa-solid fa-sterling-sign fw-bold"></i>
+                  33,7870
+                </label>
+
+              </div>
+              <div>
+                <label class="border border-2 border-secondary p-2 fw-bold">
+                  <i class="bi bi-currency-euro fw-bold"></i>
+                  33,7870
+                </label>
               </div>
             </div>
           </div>
-          <div class="col-md-2 col-sm-12  justify-content-end align-items-center d-flex">
-            <form class="d-flex w-100" role="search">
-              <div class="d-flex position-relative w-100 justify-content-start align-items-center">
-                <input class="form-control me-2 ps-4-1 rounded-0" type="search"  [(ngModel)]="searchQuery" [ngModelOptions]="{standalone: true}"  placeholder="Search" (input)="onSearchChange()" aria-label="Search">
-                <i class="fa fa-search position-absolute start-0 mx-2 me-3 text-muted"></i>
-              </div>
-            </form>
-          </div>
         </div>
-       
-      
+        <div class="col-md-2 col-sm-12  justify-content-end align-items-center d-flex">
+          <form class="d-flex w-100" role="search">
+            <div class="d-flex position-relative w-100 justify-content-start align-items-center">
+              <input class="form-control me-2 ps-4-1 rounded-0" type="search" [(ngModel)]="searchQuery"
+                [ngModelOptions]="{standalone: true}" placeholder="Search" (input)="onSearchChange()"
+                aria-label="Search">
+              <i class="fa fa-search position-absolute start-0 mx-2 me-3 text-muted"></i>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-  </nav>
+  </div>
+</nav>

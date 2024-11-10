@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
 import { TableCreatModalComponent } from './table-creat-modal/table-creat-modal.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { WarehouseType } from '../../@model/enums/WarehouseTypeEnum';
+import { Warehouse } from '../../@model/inventory';
+import { TableCreatProducModalComponent } from './table-creat-produc-modal/table-creat-produc-modal.component';
 
 @Component({
   selector: 'app-generic-table',
@@ -36,6 +38,17 @@ export class GenericTableComponent {
       modal: true,
       header: 'Reyon Ekle',
       data: {
+        warehouseType: this.warehouseType
+      },
+      footer: ""
+    });
+  }
+  showProduct(product:Warehouse){
+    this.ref = this.dialogService.open(TableCreatProducModalComponent, {
+      modal: true,
+      header: 'Ürün Ekle',
+      data: {
+        product: product,
         warehouseType: this.warehouseType
       },
       footer: ""

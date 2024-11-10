@@ -1,1 +1,48 @@
-<p>table-creat-produc-modal works!</p>
+<div class="card border-0 flex justify-content-center" [style]="{ width: '25rem' }">
+    <ng-template pTemplate="header" class="mb-4">
+        <div class="inline-flex align-items-center justify-content-center gap-2">
+            <span class="fw-bold h5 white-space-nowrap m-0">
+            </span>
+        </div>
+    </ng-template>
+    <form [formGroup]="myForm" (ngSubmit)="onSubmit(myForm)">
+        <div class="w-100 text-start">
+            <div class="gap-2">
+                <label for="id" class="d-block">Ürün ID</label>
+                <input pInputText formControlName="id" />
+            </div>
+            @if(myForm.get('id') && myForm.get('id')?.invalid){
+            <div>
+                <span class="text-danger small"> Boş geçilemez !</span>
+            </div>
+            }
+        </div>
+        <div class="w-100 text-start mt-3">
+            <div class="gap-2">
+                <label for="name" class="d-block">Ürün Adı</label>
+                <input pInputText formControlName="name" />
+            </div>
+            @if(myForm.get('name') && myForm.get('name')?.invalid){
+                <div>
+                    <span class="text-danger small"> Boş geçilemez !</span>
+                </div>
+            }
+        </div>
+        <div class="w-100 text-start mt-3">
+            <div class="gap-2">
+                <label for="rayon" class="d-block">Eklenecek Reyon</label>
+                <input pInputText formControlName="rayon" [disabled]="isDisabled" />
+            </div>
+            @if(myForm.get('rayon') && myForm.get('rayon')?.invalid){
+                <div>
+                    <span class="text-danger small"> Boş geçilemez !</span>
+                </div>
+            }
+        </div>
+        <div class="d-flex mt-3 justify-content-end align-items-center">
+            <button [disabled]="myForm.invalid" type="submit" class="btn btn-success me-2">
+                Ekle <i class="fa-solid fa-check fa-md ms-2"></i>
+            </button>
+        </div>
+    </form>
+</div>
