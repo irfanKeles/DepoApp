@@ -1,12 +1,12 @@
 <div class="row">
     <div class="col-md-6">
         <app-blank [cardTitle]="'Depo A'">
-            <app-generic-table [cols]="depoAColums" [tableData]="tableAWarehouseData" [inventoryType]="inventoryTypeA"></app-generic-table>
+            <app-generic-table [cols]="tableColum" [tableData]="warehouseListA" [warehouseType]="warehouseTypeA"></app-generic-table>
         </app-blank>
     </div>
     <div class="col-md-6">
         <app-blank [cardTitle]="'Depo B'">
-            container 2
+            <app-generic-table [cols]="tableColum" [tableData]="warehouseListB" [warehouseType]="warehouseTypeB"></app-generic-table>
         </app-blank>
     </div>
 </div>

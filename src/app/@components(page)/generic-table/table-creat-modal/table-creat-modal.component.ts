@@ -1,45 +1,78 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { CategoryComponent } from '../../category/category.component';
-import { InventoryTypeEnum } from '../../../@model/enums/inventoryTypeEnum';
+import { SharedService } from '../../../@service/shared.service';
+import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Warehouse, WarehouseRequest } from '../../../@model/inventory';
+import { DialogModule } from 'primeng/dialog';
+import { WarehouseType } from '../../../@model/enums/WarehouseTypeEnum';
 
 @Component({
   selector: 'app-table-creat-modal',
   standalone: true,
   imports: [
-    DialogModule,
     ButtonModule,
     InputTextModule,
     FormsModule,
-    CategoryComponent
+    CategoryComponent,
+    DialogModule
   ],
   templateUrl: './table-creat-modal.component.html',
   styleUrl: './table-creat-modal.component.scss'
 })
 export class TableCreatModalComponent {
-  @Input() type: InventoryTypeEnum;
-  selectedInventory: string;
-  visible: boolean = false;
+  getData: any;
+  autoSelectedWarehouse: string;
+  autoSelectedWarehouseType: WarehouseType;
+  warehouseData: Warehouse[] = [];
+  lastRayon?: string;
+  wareHouseRequest: WarehouseRequest = new WarehouseRequest()
+  public ref: DynamicDialogRef;
+  constructor(
+    private sharedService: SharedService,
+    private dialogConfig: DynamicDialogConfig,
+    public dialogService: DialogService,
+  ) { }
 
-  showDialog() {
-    this.visible = true;
-  }
   ngOnInit() {
-    this.selectedInventory = this.enumType(this.type);
+    this.getData = this.dialogConfig.data;
+    this.autoSelectedWarehouse = this.sharedService.enumType(this.getData.warehouseType);
+    this.autoSelectedWarehouseType = this.getData.warehouseType;
+    this.getInventory();
   }
-  enumType(data: InventoryTypeEnum): string {
-    let item: string = "";
-    switch (data) {
-      case 1:
-        item = 'Depo A';
-        break;
-      case 2:
-        item = 'Depo B';
-        break;
+
+  getInventory() {
+    const warehouseType = this.autoSelectedWarehouseType;
+    const getWarehouse = warehouseType === 1 ? this.sharedService.warehouseA$ : this.sharedService.warehouseB$;
+    getWarehouse.subscribe(x => {
+      this.warehouseData = x;
+      this.updateLastRayon();
+    });
+  }
+
+  private updateLastRayon() {
+    this.lastRayon = this.warehouseData.at(-1)?.rayon;
+    if (this.lastRayon) {
+      const rayonNumber = parseInt(this.lastRayon.slice(1), 10);
+      this.lastRayon = "R" + (rayonNumber + 1);
+      this.wareHouseRequest.rayon = this.lastRayon;
     }
-    return item;
+  }
+
+  closeDialog() {
+    this.ref?.close()
+  }
+
+  submitForm() {
+    const warehouseType = this.autoSelectedWarehouseType;
+    this.warehouseData.push(this.wareHouseRequest)
+    warehouseType === 1 ? this.sharedService.setInventoryA(this.warehouseData) : this.sharedService.setInventoryB(this.warehouseData);
+    warehouseType === 1 ? this.sharedService.getInventoryA() : this.sharedService.getInventoryB();
+    this.closeDialog()
+  }
+  getCategory(event: any) {
+    this.wareHouseRequest.categoryId = event;
   }
 }

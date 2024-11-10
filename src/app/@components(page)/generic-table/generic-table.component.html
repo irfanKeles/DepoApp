@@ -7,8 +7,7 @@
                 </th>
             }
             <th class="text-end">
-                <app-table-creat-modal [type]="inventoryType"></app-table-creat-modal>
-                <!-- <p-button label="Reyon Ekle" [outlined]="true"/> -->
+                <p-button label="Reyon EKle" (click)="showDialog();" [outlined]="true" />
             </th>
         </tr>
     </ng-template>
@@ -20,11 +19,17 @@
                       <td class="border-end"> {{ rowData[col.field] }} <i class="fa-solid fa-trash-can text-danger ms-3 cursor-pointer"></i> </td>
                     }
                     @case ('products'){
-                        <td class="border-end">
-                            @for(item of rowData.products; track item){
-                                <label class="badge text-bg-primary me-1"> {{item.name}} </label>
-                            }
-                        </td>
+                        @if(rowData.products){
+                            <td class="border-end">
+                                @for(item of rowData.products; track item){
+                                    <label class="badge text-bg-primary me-1"> {{item.name}} </label>
+                                }
+                                
+                            </td>
+                        }
+                        @else{
+                            <td> Ürün Bulunamadı.</td>
+                        }
                     }
                     @default {
                         <td [ngClass]="{'border-end':!$last }">

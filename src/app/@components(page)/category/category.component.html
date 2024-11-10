@@ -3,4 +3,5 @@
     [(ngModel)]="selectedCategory" 
     optionLabel="name" 
     placeholder="Reyon Türü" 
-    [appendTo]="body"/>
+    [appendTo]="body"
+    (onChange)="selectedValue($event)"/>

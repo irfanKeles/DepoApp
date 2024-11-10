@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { BlankComponent } from '../blank/blank.component';
 import { GenericTableComponent } from '../generic-table/generic-table.component';
 import { Colum } from '../../@model/genericTable/table';
-import { CategoryComponent } from '../category/category.component';
-import { InventoryTypeEnum } from '../../@model/enums/inventoryTypeEnum';
 import { InventoryService } from '../../@service/inventory.service';
 import { Warehouse } from '../../@model/inventory';
-import { Category } from '../../@model/category';
-import { CategoryService } from '../../@service/category.service';
 import { SharedService } from '../../@service/shared.service';
+import { NotificationService } from '../../@service/notification.service';
+import { CategoryService } from '../../@service/category.service';
+import { Category } from '../../@model/category';
+import { WarehouseType } from '../../@model/enums/WarehouseTypeEnum';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,27 +16,28 @@ import { SharedService } from '../../@service/shared.service';
   imports: [
     BlankComponent,
     GenericTableComponent,
-    CategoryComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
-  depoAColums: Colum[] = [];
-  depoBColums: Colum[] = [];
-  category:Category[]= [];
-  tableAWarehouseData: Warehouse[] = [];
-  tableBWarehouseData: Warehouse[] = [];
-  inventoryTypeA: InventoryTypeEnum = InventoryTypeEnum.A;
-  inventoryTypeB: InventoryTypeEnum = InventoryTypeEnum.B;
+  tableColum: Colum[] = [];
 
+  categoryList:Category[] = [];
+
+  warehouseListA: Warehouse[] = [];
+  warehouseListB: Warehouse[] = [];
+
+  warehouseTypeA: WarehouseType = WarehouseType.A;
+  warehouseTypeB: WarehouseType = WarehouseType.B;
 
   constructor(
     private inventoryService: InventoryService,
+    private sharedService: SharedService,
+    private notificationService: NotificationService,
     private categoryService: CategoryService,
-    private sharedService:SharedService,
   ) {
-    this.depoAColums = [
+    this.tableColum = [
       {
         field: 'rayon', header: 'Reyon',
       },
@@ -47,57 +48,78 @@ export class DashboardComponent {
         field: 'products', header: 'Ürünler',
       },
     ];
-    this.depoBColums = [...this.depoAColums];
+    this.setWarehosuTableDataA()
+    this.setWarehosuTableDataB()
   }
 
   ngOnInit() {
-    this.getCategory();
-    this.getAWarehouse();
-    this.getBWarehouse();
+    this.setCagetory();
+    this.getWarehosuTableDataA();
+    this.getWarehosuTableDataB();
   }
 
-  getCategory() {
+  setCagetory() {
     this.categoryService.getList().subscribe(x => {
-      this.category = x;
       this.sharedService.setCategory(x);
     },
       err => {
-        console.log(err);
+        this.notificationService.error(err.message);
       })
   }
-  getAWarehouse() {
-    this.inventoryService.getAWarehouse().subscribe(x => {
-      this.tableAWarehouseData = x;
-      this.sharedService.setInventoryA(this.tableAWarehouseData);
-      this.sharedService.getCategory().subscribe(categories => {
-        this.tableAWarehouseData = this.tableAWarehouseData.map(item => {
-          const category = categories.find(y => y.id === item.categoryId);
+
+  getWarehosuTableDataA() {
+    this.sharedService.warehouseA$.subscribe(x => {
+      this.warehouseListA = x
+      this.sharedService.category$.subscribe(categories => {
+        this.categoryList = categories;
+        this.warehouseListA = this.warehouseListA.map(item => {
+          const categorys = this.categoryList.find(y => y.id === item.categoryId);
           return {
             ...item,
-            categoryId: category ? category.name : "null"
+            categoryId: categorys ? categorys.name : "null"
           };
         });
-        console.log(this.tableAWarehouseData);
       });
     },
-    err => {
-      console.log(err);
-    });
+      err => {
+        this.notificationService.error(err.message);
+      })
   }
-  getBWarehouse(){
-    this.inventoryService.getBWarehouse().subscribe(x => {
-      this.tableBWarehouseData = x;
-      this.sharedService.setInventoryB(this.tableBWarehouseData )
-      this.tableBWarehouseData = this.tableBWarehouseData.map(x => {
-        const category = this.category.find(y => y.id === x.categoryId);
-        return {
-            ...x,
-            categoryId: category ? category.name : "null" 
-        };
-    });
+
+  getWarehosuTableDataB() {
+    this.sharedService.warehouseB$.subscribe(x => {
+      this.warehouseListB = x
+      this.sharedService.category$.subscribe(categories => {
+        this.categoryList = categories;
+        this.warehouseListB = this.warehouseListB.map(item => {
+          const categorys = this.categoryList.find(y => y.id === item.categoryId);
+          return {
+            ...item,
+            categoryId: categorys ? categorys.name : "null"
+          };
+        });
+      });
     },
       err => {
-        console.log(err);
+        this.notificationService.error(err.message);
+      })
+  }
+
+  setWarehosuTableDataA() {
+    this.inventoryService.getAWarehouse().subscribe(x => {
+      this.sharedService.setInventoryA(x);
+    },
+      err => {
+        this.notificationService.error(err.message);
+      })
+  }
+
+  setWarehosuTableDataB() {
+    this.inventoryService.getBWarehouse().subscribe(x => {
+      this.sharedService.setInventoryB(x);
+    },
+      err => {
+        this.notificationService.error(err.message);
       })
   }
 }
