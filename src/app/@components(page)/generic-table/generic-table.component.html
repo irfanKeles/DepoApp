@@ -13,16 +13,16 @@
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns">
         <tr class="border-bottom">
-            @for(col of columns; track col ){
+            @for(col of columns; track col ; let i = $index ){
                 @switch (col.field) {
                     @case ('rayon') {
-                      <td class="border-end"> {{ rowData[col.field] }} <i class="fa-solid fa-trash-can text-danger ms-3 cursor-pointer"></i> </td>
+                      <td class="border-end"> {{ rowData[col.field] }} <i class="fa-solid fa-trash-can text-danger ms-3 cursor-pointer" (click)="deleteRayon(rowData,$event)"></i> </td>
                     }
                     @case ('products'){
                         @if(rowData.products){
                             <td class="border-end">
                                 @for(item of rowData.products; track item){
-                                    <label class="badge text-bg-primary me-1"> {{item.name}} </label>
+                                    <label class="badge text-bg-primary me-1 cursor-pointer" (click)="showProduct(rowData)"> {{item.name}} </label>
                                 }
                                 
                             </td>
@@ -46,3 +46,4 @@
         </tr>
     </ng-template>
 </p-table>
+<p-confirmPopup />
