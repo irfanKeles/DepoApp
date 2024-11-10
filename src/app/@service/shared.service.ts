@@ -10,6 +10,7 @@ import { isPlatformBrowser } from '@angular/common';
   providedIn: 'root'
 })
 export class SharedService {
+  public searchQuery$ = new ReplaySubject<string>(1);
   public warehouseA$ = new ReplaySubject<any>();
   public warehouseB$ = new ReplaySubject<any>();
   public category$ = new ReplaySubject<any>();
@@ -33,21 +34,33 @@ export class SharedService {
       localStorage.setItem(CustomLocalStorageKey.Category, JSON.stringify(data))
   }
 
-
-
   getInventoryA(): Observable<Warehouse[]> {
-    const data = localStorage.getItem(CustomLocalStorageKey.InventoryA);
-    return of(data ? JSON.parse(data) : []);
-  }
-  getInventoryB(): Observable<Warehouse[]> {
-    const data = localStorage.getItem(CustomLocalStorageKey.InventoryB);
-    return of(data ? JSON.parse(data) : []);
-  }
-  getCategory(): Observable<Category[]> {
-    const data = localStorage.getItem(CustomLocalStorageKey.Category);
-    return of(data ? JSON.parse(data) : []);
+    if (isPlatformBrowser(this.platformId)) {
+      const data = localStorage.getItem(CustomLocalStorageKey.InventoryA);
+      return of(data ? JSON.parse(data) : []);
+    }
+    return of([]);
   }
 
+  getInventoryB(): Observable<Warehouse[]> {
+    if (isPlatformBrowser(this.platformId)) {
+      const data = localStorage.getItem(CustomLocalStorageKey.InventoryB);
+      return of(data ? JSON.parse(data) : []);
+    }
+    return of([]); 
+  }
+
+  getCategory(): Observable<Category[]> {
+    if (isPlatformBrowser(this.platformId)) {
+      const data = localStorage.getItem(CustomLocalStorageKey.Category);
+      return of(data ? JSON.parse(data) : []);
+    }
+    return of([]); 
+  }
+
+  setSearchQuery(query: string) {
+    this.searchQuery$.next(query); 
+  }
 
   enumType(data: WarehouseType): string {
     let item: string = "";

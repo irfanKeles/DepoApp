@@ -34,7 +34,7 @@
           <div class="col-md-2 col-sm-12  justify-content-end align-items-center d-flex">
             <form class="d-flex w-100" role="search">
               <div class="d-flex position-relative w-100 justify-content-start align-items-center">
-                <input class="form-control me-2 ps-4-1" type="search" placeholder="Search" aria-label="Search">
+                <input class="form-control me-2 ps-4-1 rounded-0" type="search"  [(ngModel)]="searchQuery" [ngModelOptions]="{standalone: true}"  placeholder="Search" (input)="onSearchChange()" aria-label="Search">
                 <i class="fa fa-search position-absolute start-0 mx-2 me-3 text-muted"></i>
               </div>
             </form>

@@ -21,12 +21,17 @@ import { WarehouseType } from '../../@model/enums/WarehouseTypeEnum';
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
+  searchQuery: string = '';
+
   tableColum: Colum[] = [];
 
   categoryList:Category[] = [];
 
   warehouseListA: Warehouse[] = [];
   warehouseListB: Warehouse[] = [];
+
+  filteredWarehouseListA: Warehouse[] = [];
+  filteredWarehouseListB: Warehouse[] = [];
 
   warehouseTypeA: WarehouseType = WarehouseType.A;
   warehouseTypeB: WarehouseType = WarehouseType.B;
@@ -53,6 +58,11 @@ export class DashboardComponent {
   }
 
   ngOnInit() {
+    this.sharedService.searchQuery$.subscribe(query => {
+      this.searchQuery = query;
+      this.search();  
+    });
+
     this.setCagetory();
     this.getWarehosuTableDataA();
     this.getWarehosuTableDataB();
@@ -80,6 +90,7 @@ export class DashboardComponent {
           };
         });
       });
+      this.search();
     },
       err => {
         this.notificationService.error(err.message);
@@ -99,6 +110,7 @@ export class DashboardComponent {
           };
         });
       });
+      this.search();
     },
       err => {
         this.notificationService.error(err.message);
@@ -121,5 +133,16 @@ export class DashboardComponent {
       err => {
         this.notificationService.error(err.message);
       })
+  }
+
+  search() {
+    const query = this.searchQuery.toLowerCase();
+    this.filteredWarehouseListA = this.warehouseListA.filter(item => 
+      item.products?.some(product => product.name.toLowerCase().includes(query)) 
+    );
+
+    this.filteredWarehouseListB = this.warehouseListB.filter(item => 
+      item.products?.some(product => product.name.toLowerCase().includes(query)) 
+    );
   }
 }

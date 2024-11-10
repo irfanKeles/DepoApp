@@ -1,21 +1,21 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Currency } from '../../@model/currency';
+import { SharedService } from '../../@service/shared.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-  currenncy:Currency[] = [];
+  currenncy: Currency[] = [];
+  searchQuery: string = '';
   constructor(
-    private _http: HttpClient,
-  ) {
-
-  }
+    private sharedService: SharedService,
+  ) {}
 
   ngOnInit() {
     // this._http.get('https://v6.exchangerate-api.com/v6/03000b0ffef4008088e540a9/latest/USD').subscribe((x:any) => {
@@ -29,6 +29,10 @@ export class HeaderComponent {
     //   err => {
     //     console.log(err);
     //   })
+  }
+  
+  onSearchChange() {
+    this.sharedService.setSearchQuery(this.searchQuery);  
   }
 
 }
